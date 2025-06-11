@@ -1,9 +1,15 @@
+# Python
+__pycache__
+*.pyc
+*.pyo
 .env
 .venv
-.idea
-.clang-tidy
+venv/
+env/
+
+# CLion
 cmake-build-debug
 build
 data
-__pycache__
-*.pyc
+.idea
+.clang-tidy
