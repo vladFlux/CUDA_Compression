@@ -287,6 +287,8 @@ int main(const int argc, char **argv) {
     std::cout << std::left << std::setw(25) << "Execution time: " << std::right << std::setw(15)
             << seconds << "s" << std::setw(5) << milliseconds << "ms" << std::endl;
 
+    std::cout << "GPU Compression completed successfully!" << std::endl << std::endl;
+
     /*=========================================================================
      * CLEANUP AND EXIT
      *=========================================================================*/

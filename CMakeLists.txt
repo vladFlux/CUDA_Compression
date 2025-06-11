@@ -15,16 +15,16 @@ add_executable(huffman_compression
 set_target_properties(huffman_compression PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON)
 
-add_executable(huffman_decompress
+add_executable(huffman_decompression
         src/decompression/main_decompress.c
         src/decompression/serial_utilities.c)
 
-set_target_properties(huffman_decompress PROPERTIES LINKER_LANGUAGE C)
+set_target_properties(huffman_decompression PROPERTIES LINKER_LANGUAGE C)
 
 
 # CPU binaries
-add_executable(cpu_compression
+add_executable(cpu_huffman_compression
         src/cpu_compression/huffman_cpu_compression.cpp)
 
-add_executable(cpu_decompression
+add_executable(cpu_huffman_decompression
         src/cpu_compression/huffman_cpu_decompression.cpp)

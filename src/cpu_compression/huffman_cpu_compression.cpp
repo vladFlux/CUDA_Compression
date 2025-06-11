@@ -355,7 +355,7 @@ int main(int argc, char *argv[]) {
     const int seconds = static_cast<int>(total_seconds);
     const int milliseconds = static_cast<int>((total_seconds - seconds) * 1000);
 
-    cout << "Compression completed successfully!" << endl;
+    cout << "CPU Compression completed successfully!" << endl;
     std::cout << std::left << std::setw(25) << "Execution time: " << std::right << std::setw(15) <<
             seconds << "s" << std::setw(5) << milliseconds << "ms" << std::endl;
 

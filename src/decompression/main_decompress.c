@@ -220,6 +220,8 @@ int main(int argc, char **argv) {
     const unsigned int cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
     printf("Execution time: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
 
+    printf("GPU Decompression completed successfully!\n\n");
+
     /*=========================================================================
      * CLEANUP AND EXIT
      *=========================================================================*/

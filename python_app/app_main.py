@@ -51,9 +51,9 @@ class CompressionApp(QMainWindow):
         if cpu_select:
             cpu_flag = "cpu_"
 
+        mode = self.options_panel.selectors.mode_select.get_compress_mode()
         command = [
-            f"../build/{cpu_flag}{self.options_panel.selectors.algo_select.get_selected_algorithm()}_compression",
-            self.options_panel.selectors.mode_select.get_compress_mode(),
+            f"../build/{cpu_flag}huffman{mode}",
             self.file_dialog_widget.get_input_file_path(),
             self.file_dialog_widget.get_output_file_path()
         ]

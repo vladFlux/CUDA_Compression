@@ -49,6 +49,6 @@ class ModeSelectorWidget(QtWidgets.QWidget):
 
     def get_compress_mode(self) -> str:
         if self.mode:
-            return "-c"
+            return "_compression"
         else:
-            return "-d"
+            return "_decompression"
