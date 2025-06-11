@@ -5,8 +5,6 @@ set(CMAKE_CUDA_STANDARD 20)
 set(CMAKE_CUDA_ARCHITECTURES 89)
 set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
 
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-
 add_executable(huffman_compression
         huffman_compression/compression/main_compress.cu
         huffman_compression/compression/GPU_wrapper.cu

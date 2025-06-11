@@ -62,6 +62,6 @@ pip install -r requirements.txt
 
 ### 3. Move to the app directory and run
 ```bash
-cd Python\ App/
+cd python_app/
 python3 main.py
 ```
