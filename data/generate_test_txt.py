@@ -1,10 +1,8 @@
 import random
 import os
-
+import argparse
 
 def generate_complex_text():
-    """Generate varied, complex paragraphs with realistic content."""
-
     # Base paragraph templates with varied topics
     paragraphs = [
         "The morning sun cast long shadows across the bustling metropolis as commuters hurried through the labyrinthine streets, each person carrying their own unique story of dreams, aspirations, and daily struggles. Traffic lights orchestrated the urban symphony while vendors called out their wares from every corner, creating a tapestry of human experience that stretched from the gleaming skyscrapers to the humble storefronts below. In this concrete jungle, technology and tradition danced together in an endless waltz of progress and preservation.",
@@ -76,10 +74,7 @@ def generate_complex_text():
 
     return base + connector + topic + ending
 
-
-def create_large_text_file(filename="complex_text_1gb.txt", target_size_gb=0.95):
-    """Create a text file just under 1GB with complex, varied content."""
-
+def create_large_text_file(filename="dummy.txt", target_size_gb=1.0):
     target_size_bytes = int(target_size_gb * 1024 * 1024 * 1024)  # Convert GB to bytes
     current_size = 0
     paragraph_count = 0
@@ -104,7 +99,7 @@ def create_large_text_file(filename="complex_text_1gb.txt", target_size_gb=0.95)
             if current_size + paragraph_bytes > target_size_bytes:
                 # Add a partial paragraph to get close to target size
                 remaining_bytes = target_size_bytes - current_size
-                partial_text = full_paragraph[:remaining_bytes // 2]  # Rough estimate
+                partial_text = full_paragraph[:remaining_bytes//2]  # Rough estimate
                 f.write(partial_text)
                 current_size += len(partial_text.encode('utf-8'))
                 break
@@ -116,17 +111,70 @@ def create_large_text_file(filename="complex_text_1gb.txt", target_size_gb=0.95)
             # Progress indicator
             if paragraph_count % 1000 == 0:
                 progress = (current_size / target_size_bytes) * 100
-                print(f"Progress: {progress:.1f}% ({current_size:,} bytes)")
+                print(f"\rProgress: {progress:.1f}% ({current_size:,} bytes)", end='', flush=True)
 
     # Get final file size
     final_size = os.path.getsize(filename)
     final_size_gb = final_size / (1024 * 1024 * 1024)
 
-    print(f"\nFile generation complete!")
+    print(f"\n\nFile generation complete!")
     print(f"Filename: {filename}")
     print(f"Final size: {final_size_gb:.3f} GB ({final_size:,} bytes)")
     print(f"Paragraphs generated: {paragraph_count}")
 
+def parse_arguments():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Generate a large text file with complex, varied content.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+  Examples:
+  python script.py                                 # Default: 1GB file named 'dummy.txt'
+  python script.py -s 2.5                          # Generate 2.5GB file
+  python script.py -f my_large_file.txt            # Custom filename
+  python script.py -s 0.5 -f small_test.txt        # 0.5GB file with custom name
+  python script.py --size 1.8 --filename data.txt  # Long form arguments
+  """
+    )
+
+    parser.add_argument(
+        '-f', '--filename',
+        default='dummy.txt',
+        help='Output filename (default: dummy.txt)'
+    )
+
+    parser.add_argument(
+        '-s', '--size',
+        type=float,
+        default=1.0,
+        help='Target file size in GB (default: 1.0)'
+    )
+
+    parser.add_argument(
+        '--seed',
+        type=int,
+        help='Random seed for reproducible output (optional)'
+    )
+
+    return parser.parse_args()
 
 if __name__ == "__main__":
-    create_large_text_file()
+    args = parse_arguments()
+
+    # Set random seed if provided
+    if args.seed:
+        random.seed(args.seed)
+        print(f"Using random seed: {args.seed}")
+
+    # Validate arguments
+    if args.size <= 0:
+        print("Error: Size must be greater than 0")
+        exit(1)
+
+    if args.size > 10:
+        response = input(f"Warning: You're about to create a {args.size}GB file. Continue? (y/N): ")
+        if response.lower() != 'y':
+            print("Operation cancelled.")
+            exit(0)
+
+    create_large_text_file(args.filename, args.size)
