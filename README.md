@@ -57,7 +57,7 @@ While in the ``build/`` directory, execute algorithms as followed:
 
 ## If you wish to run the algorithms using the Python app, follow these instructions
 
-### 1. Create a Python virtual environment in the ``CUDA_Compression`` directory and activate it
+### 1. Create a Python virtual environment inside the ``CUDA_Compression`` directory and activate it
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate

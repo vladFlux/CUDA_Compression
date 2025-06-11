@@ -12,7 +12,7 @@ if __name__ == "__main__":
         application.setStyleSheet(style_file.read())
 
     icon = QIcon("./assets/icons/cuda_icon.png")
-    # icon.addFile("./assets/icons/cuda_icon.png", QSize(64, 64))
+    icon.addFile("./assets/icons/cuda_icon.png", QSize(64, 64))
     application.setWindowIcon(icon)
 
     widget = app_main.CompressionApp()

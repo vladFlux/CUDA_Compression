@@ -1,10 +1,16 @@
 from PySide6.QtCore import QObject, Signal, QMutex, QWaitCondition
 import psutil
 import cpuinfo
-from pynvml import nvmlInit, nvmlShutdown, nvmlDeviceGetHandleByIndex, \
-    nvmlDeviceGetName, nvmlDeviceGetUtilizationRates, \
-    nvmlDeviceGetMemoryInfo
 
+from pynvml import (
+    nvmlInit,
+    nvmlShutdown,
+    nvmlDeviceGetHandleByIndex,
+    nvmlDeviceGetName,
+    nvmlDeviceGetUtilizationRates,
+    nvmlDeviceGetMemoryInfo,
+    NVMLError
+)
 
 class StatsWorker(QObject):
     stats_ready = Signal(dict)
@@ -15,14 +21,22 @@ class StatsWorker(QObject):
         self._running = True
         self._mutex = QMutex()
         self._wait_condition = QWaitCondition()
-        nvmlInit()
+        self.nvml_available = False
+
+        try:
+            nvmlInit()
+            self.nvml_available = True
+        except NVMLError as e:
+            print(f"[StatsWorker] NVIDIA NVML initialization failed: {e}")
+            self.nvml_available = False
 
     def stop(self):
         self._mutex.lock()
         self._running = False
         self._wait_condition.wakeAll()
         self._mutex.unlock()
-        nvmlShutdown()
+        if self.nvml_available:
+            nvmlShutdown()
 
     def run(self):
         while True:
@@ -44,21 +58,24 @@ class StatsWorker(QObject):
                 "ram_percent": mem.percent
             })
 
-            try:
-                handle = nvmlDeviceGetHandleByIndex(0)  # First GPU
-                name = nvmlDeviceGetName(handle).decode("utf-8")
-                util = nvmlDeviceGetUtilizationRates(handle)
-                mem_info = nvmlDeviceGetMemoryInfo(handle)
+            if self.nvml_available:
+                try:
+                    handle = nvmlDeviceGetHandleByIndex(0)
+                    name = nvmlDeviceGetName(handle).decode("utf-8")
+                    util = nvmlDeviceGetUtilizationRates(handle)
+                    mem_info = nvmlDeviceGetMemoryInfo(handle)
 
-                stats.update({
-                    "gpu_name": name,
-                    "gpu_usage": util.gpu,
-                    "vram_used": mem_info.used / (1024 ** 2),   # MB
-                    "vram_total": mem_info.total / (1024 ** 2), # MB
-                    "vram_percent": (mem_info.used / mem_info.total) * 100 if mem_info.total else 0
-                })
-            except Exception as e:
-                stats["gpu_error"] = str(e)
+                    stats.update({
+                        "gpu_name": name,
+                        "gpu_usage": util.gpu,
+                        "vram_used": mem_info.used / (1024 ** 2),
+                        "vram_total": mem_info.total / (1024 ** 2),
+                        "vram_percent": (mem_info.used / mem_info.total) * 100 if mem_info.total else 0
+                    })
+                except NVMLError as e:
+                    stats["gpu_error"] = f"NVMLError: {e}"
+            else:
+                stats["gpu_info"] = "No NVIDIA GPU or driver detected."
 
             self.stats_ready.emit(stats)
 
