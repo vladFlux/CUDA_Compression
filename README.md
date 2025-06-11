@@ -55,7 +55,13 @@ While in the ``build/`` directory, execute algorithms as followed:
 ./<algorithm_name> <input_file_path> <output_file_path>
 ```
 
-## If you wish to run the algorithms using the Python app, follow these instructions
+For ``<algorithm_name>`` select one of the following: 
+- ``huffman_compression`` 
+- ``huffman_decompression``
+- ``cpu_huffman_compression``
+- ``cpu_huffman_decompression``
+
+## If you wish to run the algorithms using the Python app for additional features, follow these instructions
 
 This PySide6 application is built around dark mode and uses your system's default theme. If your system is set to 
 light mode, the interface may appear visually inconsistent or difficult to read.
