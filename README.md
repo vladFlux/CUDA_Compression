@@ -11,8 +11,11 @@ decompression.
 
 ### Software Requirements
 - **CUDA Toolkit**: Must be installed following the official installation guide on [NVIDIA's website](https://developer.nvidia.com/cuda-downloads)
+  - Recommended version: **CUDA 12.2** or newer
 - Compatible C/C++ compiler
-- **CMake 3.28** and **Make 4.3** or higher
+  - Must be compatible with the installed CUDA Toolkit
+  - GCC 11 or newer is recommended
+- **CMake 3.28** and **Make 4.3** or higher is recommended
 
 ### You can verify the CUDA installation running the following commands
 ```bash
@@ -28,9 +31,7 @@ git clone https://github.com/vladFlux/CUDA_Compression.git
 cd CUDA_Compression/
 ```
 
-You can run the app with the included binaries or build from source.
-
-If you wish to build from source, follow these steps:
+### Building the binaries from source
 
 ### 1. Create a build folder inside the ``CUDA_Compression`` directory
 ```bash
@@ -44,8 +45,15 @@ cmake ..
 make -j$(nproc)
 ```
 
-The new binaries will be written to the ``bin/`` directory
+The new binaries will be written to the ``build/`` directory
 
+### Running the algorithms
+
+While in the ``build/`` directory, execute algorithms as followed:
+
+```bash
+./<algorithm_name> <input_file_path> <output_file_path>
+```
 
 ## If you wish to run the algorithms using the Python app, follow these instructions
 
@@ -63,5 +71,5 @@ pip install -r requirements.txt
 ### 3. Move to the app directory and run
 ```bash
 cd python_app/
-python3 main.py
+python3 CUDA_app.py
 ```

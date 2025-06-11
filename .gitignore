@@ -13,6 +13,7 @@ build
 .idea
 .clang-tidy
 
+# Data
 data/*
 !data
 !data/generate_test_txt.py

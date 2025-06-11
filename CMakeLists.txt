@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28)
 project(compress LANGUAGES C CXX CUDA)
 
 set(CMAKE_CUDA_STANDARD 20)
-set(CMAKE_CUDA_ARCHITECTURES 89)
+set(CMAKE_CUDA_ARCHITECTURES "native")
 set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
 
 add_executable(huffman_compression
