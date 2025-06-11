@@ -10,6 +10,9 @@ env/
 # CLion
 cmake-build-debug
 build
-data
 .idea
 .clang-tidy
+
+data/*
+!data
+!data/generate_test_txt.py
