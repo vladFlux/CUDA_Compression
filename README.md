@@ -34,7 +34,7 @@ If you wish to build from source, follow these steps:
 
 ### 1. Create a build folder inside the ``CUDA_Compression`` directory
 ```bash
-mkdir buid
+mkdir build
 cd build/
 ```
 
