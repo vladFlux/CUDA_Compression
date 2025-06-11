@@ -1,7 +1,9 @@
 from PySide6.QtCore import QObject, Signal, QMutex, QWaitCondition
 import psutil
-import GPUtil
 import cpuinfo
+from pynvml import nvmlInit, nvmlShutdown, nvmlDeviceGetHandleByIndex, \
+    nvmlDeviceGetName, nvmlDeviceGetUtilizationRates, \
+    nvmlDeviceGetMemoryInfo
 
 
 class StatsWorker(QObject):
@@ -13,12 +15,14 @@ class StatsWorker(QObject):
         self._running = True
         self._mutex = QMutex()
         self._wait_condition = QWaitCondition()
+        nvmlInit()
 
     def stop(self):
         self._mutex.lock()
         self._running = False
-        self._wait_condition.wakeAll()  # Wake the thread if it’s waiting
+        self._wait_condition.wakeAll()
         self._mutex.unlock()
+        nvmlShutdown()
 
     def run(self):
         while True:
@@ -41,16 +45,18 @@ class StatsWorker(QObject):
             })
 
             try:
-                gpus = GPUtil.getGPUs()
-                if gpus:
-                    gpu = gpus[0]
-                    stats.update({
-                        "gpu_name": gpu.name,
-                        "gpu_usage": gpu.load * 100,
-                        "vram_used": gpu.memoryUsed,
-                        "vram_total": gpu.memoryTotal,
-                        "vram_percent": (gpu.memoryUsed / gpu.memoryTotal) * 100 if gpu.memoryTotal else 0
-                    })
+                handle = nvmlDeviceGetHandleByIndex(0)  # First GPU
+                name = nvmlDeviceGetName(handle).decode("utf-8")
+                util = nvmlDeviceGetUtilizationRates(handle)
+                mem_info = nvmlDeviceGetMemoryInfo(handle)
+
+                stats.update({
+                    "gpu_name": name,
+                    "gpu_usage": util.gpu,
+                    "vram_used": mem_info.used / (1024 ** 2),   # MB
+                    "vram_total": mem_info.total / (1024 ** 2), # MB
+                    "vram_percent": (mem_info.used / mem_info.total) * 100 if mem_info.total else 0
+                })
             except Exception as e:
                 stats["gpu_error"] = str(e)
 
@@ -58,5 +64,5 @@ class StatsWorker(QObject):
 
             self._mutex.lock()
             if self._running:
-                self._wait_condition.wait(self._mutex, int(self.interval * 1000))  # Wait for interval or stop
+                self._wait_condition.wait(self._mutex, int(self.interval * 1000))
             self._mutex.unlock()
