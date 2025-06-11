@@ -47,16 +47,26 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.ram_label.setText(
             f"RAM: {stats['ram_used']:.1f}/{stats['ram_total']:.1f} GB ({stats['ram_percent']:.1f}%)"
         )
+
         if "gpu_name" in stats:
             self.gpu_name_label.setText(stats["gpu_name"])
+        elif "gpu_info" in stats:
+            self.gpu_name_label.setText(stats["gpu_info"])
+
         if "gpu_usage" in stats:
             self.gpu_usage_label.setText(f"GPU usage: {stats['gpu_usage']:.1f}%")
+        else:
+            self.gpu_usage_label.setText("GPU: -")
+
         if "vram_used" in stats and "vram_total" in stats:
             self.vram_label.setText(
-                f"VRAM: {stats['vram_percent']:.1f}% ({stats['vram_used']}/{stats['vram_total']} MB)"
+                f"VRAM: {stats['vram_percent']:.1f}% ({stats['vram_used']:.0f}/{stats['vram_total']:.0f} MB)"
             )
         elif "gpu_error" in stats:
             self.vram_label.setText(f"VRAM: Error - {stats['gpu_error']}")
+        else:
+            self.vram_label.setText("VRAM: -")
+
 
     def closeEvent(self, event):
         self.worker.stop()

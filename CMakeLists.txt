@@ -18,4 +18,10 @@ add_executable(huffman_decompress
         src/decompression/main_decompress.c
         src/decompression/serial_utilities.c)
 
+add_executable(cpu_compression
+        src/cpu_compression/huffman_cpu_compression.cpp)
+
+add_executable(cpu_decompression
+        src/cpu_compression/huffman_cpu_decompression.cpp)
+
 set_target_properties(huffman_decompress PROPERTIES LINKER_LANGUAGE C)

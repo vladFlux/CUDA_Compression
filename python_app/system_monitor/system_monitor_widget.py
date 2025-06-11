@@ -11,9 +11,9 @@ class SystemMonitorWidget(QWidget):
         super().__init__()
 
         self.terminal_output = TerminalOutputWidget()
-        self.resource_monitor = ResourceMonitor()
+        self.init_output() # Move output to app terminal right after initialization for debugging
 
-        self.init_output()
+        self.resource_monitor = ResourceMonitor()
 
         layout = QHBoxLayout()
 
