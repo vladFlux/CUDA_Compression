@@ -12,7 +12,7 @@ decompression.
 ### Software Requirements
 - **CUDA Toolkit**: Must be installed following the official installation guide on [NVIDIA's website](https://developer.nvidia.com/cuda-downloads)
   - Recommended version: **CUDA 12.2** or newer
-- Compatible C/C++ compiler
+- Compatible C/C++20 compiler
   - Must be compatible with the installed CUDA Toolkit
   - GCC 11 or newer is recommended
 - **CMake 3.28** and **Make 4.3** or higher is recommended
@@ -56,6 +56,13 @@ While in the ``build/`` directory, execute algorithms as followed:
 ```
 
 ## If you wish to run the algorithms using the Python app, follow these instructions
+
+This PySide6 application is built around dark mode and uses your system's default theme. If your system is set to 
+light mode, the interface may appear visually inconsistent or difficult to read.
+
+For the best user experience, please switch your operating system to dark mode before launching the application.
+Light theme support is planned for a future release.
+
 
 ### 1. Create a Python virtual environment inside the ``CUDA_Compression`` directory and activate it
 ```bash

@@ -74,5 +74,3 @@ class ResourceMonitor(QtWidgets.QWidget):
         self.thread.wait()
 
         super().closeEvent(event)
-
-

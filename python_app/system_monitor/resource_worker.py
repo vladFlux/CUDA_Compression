@@ -28,6 +28,7 @@ class StatsWorker(QObject):
             self.nvml_available = True
         except NVMLError as e:
             print(f"[StatsWorker] NVIDIA NVML initialization failed: {e}")
+            print(f"GPU resources will not be displayed")
             self.nvml_available = False
 
     def stop(self):
