@@ -5,12 +5,12 @@
 
 
 /**
- * @brief Sorts Huffman tree nodes by frequency using bubble sort
- * @param index Current iteration index in the tree building process
+ * @brief Sorts Huffman tree nodes by frequency using insertion sort
+ * @param index_param Current iteration index in the tree building process
  * @param distinct_character_count Number of unique characters in input data
  * @param combined_huffman_nodes Starting index for nodes that haven't been combined yet
  *
- * This function implements bubble sort to arrange Huffman tree nodes in ascending order
+ * This function implements insertion sort to arrange Huffman tree nodes in ascending order
  * by their frequency counts. The sorting is essential for the Huffman algorithm to work
  * correctly - we always want to combine the two nodes with the lowest frequencies.
  *
@@ -18,20 +18,26 @@
  * into the tree structure. Only uncombined nodes (from combined_huffman_nodes onward)
  * need to be sorted in each iteration.
  */
-void sort_huffman_tree(const int index, const int distinct_character_count, const int combined_huffman_nodes) {
-    // Bubble sort implementation for Huffman nodes
-    // Outer loop: goes through all uncombined nodes
-    for (int a = combined_huffman_nodes; a < distinct_character_count - 1 + index; a++) {
-        // Inner loop: performs the bubble sort comparisons
-        for (int b = combined_huffman_nodes; b < distinct_character_count - 1 + index; b++) {
-            // Swap nodes if current node has higher frequency than next node
-            // This ensures nodes are sorted in ascending order by frequency
-            if (huffman_tree_node[b].count > huffman_tree_node[b + 1].count) {
-                const huffman_tree temp_huffman_tree_node = huffman_tree_node[b];
-                huffman_tree_node[b] = huffman_tree_node[b + 1];
-                huffman_tree_node[b + 1] = temp_huffman_tree_node;
-            }
+void sort_huffman_tree(const int index_param, const int distinct_character_count, const int combined_huffman_nodes) {
+    // Define the range of nodes that need to be sorted
+    const int start = combined_huffman_nodes;
+    const int end = distinct_character_count - 1 + index_param;
+
+    // Insertion sort: iterate through unsorted portion starting from second element
+    for (int index = start + 1; index <= end; index++) {
+        // Store the current element to be inserted into sorted portion
+        const huffman_tree temp = huffman_tree_node[index];
+        int sub_index = index - 1;
+
+        // Shift elements in sorted portion that are greater than temp to the right
+        // This creates space for inserting temp in its correct position
+        while (sub_index >= start && huffman_tree_node[sub_index].count > temp.count) {
+            huffman_tree_node[sub_index + 1] = huffman_tree_node[sub_index];
+            sub_index--;
         }
+
+        // Insert temp into its correct position in the sorted portion
+        huffman_tree_node[sub_index + 1] = temp;
     }
 }
 
@@ -42,7 +48,7 @@ void sort_huffman_tree(const int index, const int distinct_character_count, cons
  * @param combined_huffman_nodes Index of the first uncombined node
  *
  * This function implements the core of the Huffman algorithm by:
- * 1. Taking the two nodes with lowest frequencies (after sorting)
+ * 1. Taking the two nodes with the lowest frequencies (after sorting)
  * 2. Creating a new internal node with their combined frequency
  * 3. Setting the new node's left and right children to point to these nodes
  * 4. Updating the tree head pointer to the newly created node

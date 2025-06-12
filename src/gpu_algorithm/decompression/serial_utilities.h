@@ -118,7 +118,7 @@ extern struct huffman_tree huffman_tree_node[512];
 
 /**
  * @brief Sorts tree nodes by frequency for deterministic tree reconstruction
- * @param index Current iteration in tree building
+ * @param index_param Current iteration in tree building
  * @param distinct_character_count Number of unique characters
  * @param combined_huffman_nodes Starting index of uncombined nodes
  *
@@ -126,7 +126,7 @@ extern struct huffman_tree huffman_tree_node[512];
  * to the compression-time sorting to ensure the same tree structure is rebuilt.
  * Uses simple bubble sort for deterministic, reproducible ordering.
  */
-void sort_huffman_tree(int index, int distinct_character_count, int combined_huffman_nodes);
+void sort_huffman_tree(int index_param, int distinct_character_count, int combined_huffman_nodes);
 
 /**
  * @brief Combines lowest-frequency nodes into internal tree nodes

@@ -122,15 +122,15 @@ extern __constant__ unsigned char d_bit_sequence_const_memory[256][255];
  *=============================================================================*/
 
 /**
- * @brief Sorts Huffman tree nodes by frequency using bubble sort
- * @param index Current iteration in tree building process
+ * @brief Sorts Huffman tree nodes by frequency using insertion sort
+ * @param index_param Current iteration in tree building process
  * @param distinct_character_count Number of unique characters in input
  * @param combined_huffman_nodes Starting index of uncombined nodes
  *
  * Essential for Huffman algorithm correctness - ensures lowest frequency
  * nodes are always combined first to create optimal encoding tree.
  */
-void sort_huffman_tree(int index, int distinct_character_count, int combined_huffman_nodes);
+void sort_huffman_tree(int index_param, int distinct_character_count, int combined_huffman_nodes);
 
 /**
  * @brief Combines two lowest-frequency nodes into new internal tree node

@@ -60,7 +60,7 @@ class ResourceMonitor(QtWidgets.QWidget):
 
         if "vram_used" in stats and "vram_total" in stats:
             self.vram_label.setText(
-                f"VRAM: {stats['vram_percent']:.1f}% ({stats['vram_used']:.0f}/{stats['vram_total']:.0f} MB)"
+                f"VRAM: {stats['vram_used']:.0f}/{stats['vram_total']:.0f} MB ({stats['vram_percent']:.1f}%)"
             )
         elif "gpu_error" in stats:
             self.vram_label.setText(f"VRAM: Error - {stats['gpu_error']}")
