@@ -45,6 +45,7 @@ class CompressionApp(QMainWindow):
         self.buttons_connect()
 
     def run_current_algorithm(self):
+        # Build command with flags
         cpu_select = self.options_panel.selectors.hardware_select.is_cpu_selected()
         cpu_flag = ""
 
@@ -62,22 +63,30 @@ class CompressionApp(QMainWindow):
         self.control_buttons.algorithm_button.setEnabled(False)
         self.control_buttons.algorithm_button.setText("Running")
 
+        # Create thread and worker
         self.algo_thread = QThread()
         self.algo_worker = AlgorithmWorker(command)
+
+        # Get execution time from algorithm
+        self.algo_worker.execution_time.connect(self.handle_execution_time)
+
         self.algo_worker.moveToThread(self.algo_thread)
 
+        # Connect the worker output to the terminal
         self.algo_worker.output_line.connect(self.system_monitor.terminal_output.append_text)
 
         # When the worker is done, re-enable the button
         self.algo_worker.finished.connect(self.control_buttons.enable_button)
         self.algo_worker.error.connect(self.control_buttons.enable_button)
 
+        # Cleanup
         self.algo_worker.finished.connect(self.algo_thread.quit)
         self.algo_worker.finished.connect(self.algo_worker.deleteLater)
         self.algo_thread.finished.connect(self.algo_thread.deleteLater)
 
         self.algo_worker.error.connect(lambda msg: self.system_monitor.terminal_output.append_text(f"[ERROR] {msg}"))
 
+        # Start
         self.algo_thread.started.connect(self.algo_worker.run)
         self.algo_thread.start()
 
@@ -89,3 +98,6 @@ class CompressionApp(QMainWindow):
     def closeEvent(self, event):
         self.system_monitor.resource_monitor.close()
         super().closeEvent(event)
+
+    def handle_execution_time(self, time_ms):
+        print(f"[INFO] Algorithm execution time: {time_ms} ms")
