@@ -31,6 +31,8 @@ class ControlButtonsWidget(QWidget):
     def enable_button(self):
         self.algorithm_button.setEnabled(True)
         self.algorithm_button.setText("Run Algorithm")
+        self.comparison_button.setEnabled(True)
+        self.comparison_button.setText("Start comparison")
 
     def init_button_icons(self):
         icon = QIcon("./assets/icons/run_algo.svg")

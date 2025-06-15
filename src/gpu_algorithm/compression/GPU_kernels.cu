@@ -37,7 +37,7 @@ __global__ void compress(unsigned char *d_input_file_data, const unsigned int *d
     // Two paths based on whether constant memory is needed for very long bit sequences
     if (const_memory_flag == 0) {
         // Standard path: All bit sequences fit in shared memory
-        // Each thread processes every (blockDim.x)th element to ensure coalesced memory access
+        // Each thread processes every (blockDim.x)th element to ensure split memory access
         for (index = pos; index < input_file_length; index += blockDim.x) {
             // For each input byte, copy its Huffman bit sequence to the compressed data buffer
             // d_compressed_data_offset[index] gives the bit position where this byte's encoding starts

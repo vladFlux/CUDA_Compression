@@ -5,7 +5,7 @@ import re
 
 class AlgorithmWorker(QObject):
     output_line = Signal(str)
-    execution_time = Signal(int)  # New signal
+    execution_time = Signal(int)
     finished = Signal()
     error = Signal(str)
 

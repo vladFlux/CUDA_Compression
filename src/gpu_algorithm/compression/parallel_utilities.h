@@ -5,7 +5,7 @@
  * @brief Header file for GPU-accelerated Huffman compression system
  *
  * This header defines the core data structures and function interfaces for a
- * sophisticated parallel Huffman compression implementation that handles:
+ * parallel Huffman compression implementation that handles:
  * - Variable file sizes (small to very large)
  * - Integer overflow in bit offset calculations
  * - GPU memory limitations through chunking
