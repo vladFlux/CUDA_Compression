@@ -2,6 +2,7 @@ import random
 import os
 import argparse
 
+
 def generate_complex_text():
     # Base paragraph templates with varied topics
     paragraphs = [

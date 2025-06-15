@@ -1,3 +1,5 @@
+import os.path
+
 from PySide6.QtWidgets import QMainWindow, QWidget
 from PySide6 import QtWidgets
 from PySide6.QtCore import Qt, QThread, QTimer
@@ -48,22 +50,30 @@ class CompressionApp(QMainWindow):
         # Dict for comparison data
         self.execution_data = {}
         self.running_jobs = []
-        self.comparison_runs = 3
+        self.comparison_runs = 1
 
     def run_current_algorithm(self):
         # Build command with flags
+        input_path = self.file_dialog_widget.get_input_file_path()
+
+        if not os.path.isfile(input_path) or input_path == "":
+            print("Invalid input path!")
+            return
+
+        output_path = self.file_dialog_widget.get_output_file_path()
+
+        if output_path == "":
+            print("Output requires a path or file name!")
+            return
+
+        mode = self.options_panel.selectors.mode_select.get_compress_mode()
         cpu_select = self.options_panel.selectors.hardware_select.is_cpu_selected()
         cpu_flag = ""
 
         if cpu_select:
             cpu_flag = "cpu_"
 
-        mode = self.options_panel.selectors.mode_select.get_compress_mode()
-        command = [
-            f"../build/{cpu_flag}huffman{mode}",
-            self.file_dialog_widget.get_input_file_path(),
-            self.file_dialog_widget.get_output_file_path()
-        ]
+        command = [f"../build/{cpu_flag}huffman{mode}", input_path, output_path]
 
         # Disable the buttons to prevent duplicate presses
         self.control_buttons.algorithm_button.setEnabled(False)
@@ -101,20 +111,29 @@ class CompressionApp(QMainWindow):
         self.control_buttons.comparison_button.clicked.connect(self.run_comparisons)
 
     def run_comparisons(self):
+        input_path = self.file_dialog_widget.get_input_file_path()
+
+        if not os.path.isfile(input_path) or input_path == "":
+            print("Invalid input path!")
+            return
+
+        output_path = self.file_dialog_widget.get_output_file_path()
+
+        if output_path == "":
+            print("Output requires a path or file name!")
+            return
+
+        self.algorithms_to_run = [
+            ("CPU Huffman", ["../build/cpu_huffman_compression", input_path, output_path], self.comparison_runs),
+            ("GPU Huffman", ["../build/huffman_compression", input_path, output_path], self.comparison_runs),
+        ]
+
         self.control_buttons.comparison_button.setEnabled(False)
         self.control_buttons.comparison_button.setText("Running...")
         self.control_buttons.algorithm_button.setEnabled(False)
         self.control_buttons.algorithm_button.setText("Running...")
 
-        self.algorithms_to_run = [
-            ("CPU Huffman", ["../build/cpu_huffman_compression", self.file_dialog_widget.get_input_file_path(),
-                             self.file_dialog_widget.get_output_file_path()],
-             self.comparison_runs),
-            ("GPU Huffman", ["../build/huffman_compression", self.file_dialog_widget.get_input_file_path(),
-                             self.file_dialog_widget.get_output_file_path()],
-             self.comparison_runs),
-        ]
-
+        # Start comparison
         self.run_next_algorithm()
 
     def run_next_algorithm(self):
