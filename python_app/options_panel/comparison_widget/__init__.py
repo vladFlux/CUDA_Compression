@@ -1,5 +1,5 @@
-from .comparison_checkbox import ComparisonCheckboxWidget
+from .comparison_settings import ComparisonRunSettingsWidget
 
 __all__ = [
-    "ComparisonCheckboxWidget"
+    "ComparisonRunSettingsWidget"
 ]

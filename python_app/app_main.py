@@ -109,6 +109,7 @@ class CompressionApp(QMainWindow):
         self.control_buttons.clear_button.clicked.connect(self.system_monitor.terminal_output.clear)
         self.control_buttons.algorithm_button.clicked.connect(self.run_current_algorithm)
         self.control_buttons.comparison_button.clicked.connect(self.run_comparisons)
+        self.options_panel.comparison.clear_data_button.clicked.connect(self.clear_comparison_data)
 
     def run_comparisons(self):
         input_path = self.file_dialog_widget.get_input_file_path()
@@ -122,6 +123,8 @@ class CompressionApp(QMainWindow):
         if output_path == "":
             print("Output requires a path or file name!")
             return
+
+        self.comparison_runs = self.options_panel.comparison.get_run_count()
 
         self.algorithms_to_run = [
             ("CPU Huffman", ["../build/cpu_huffman_compression", input_path, output_path], self.comparison_runs),
@@ -195,3 +198,7 @@ class CompressionApp(QMainWindow):
         if name not in self.execution_data:
             self.execution_data[name] = []
         self.execution_data[name].append(time_sec)
+
+    def clear_comparison_data(self):
+        self.execution_data.clear()
+        print("Comparison data was deleted!")

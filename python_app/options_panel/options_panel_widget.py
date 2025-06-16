@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 from .compression_widget import CompressionSelectorsWidget
-from .comparison_widget import ComparisonCheckboxWidget
+from .comparison_widget import ComparisonRunSettingsWidget
 
 class OptionsPanelWidget(QWidget):
     def __init__(self):
@@ -9,7 +9,7 @@ class OptionsPanelWidget(QWidget):
         options_layout = QHBoxLayout()
 
         self.selectors = CompressionSelectorsWidget()
-        self.comparison = ComparisonCheckboxWidget()
+        self.comparison = ComparisonRunSettingsWidget()
 
         options_layout.addWidget(self.selectors)
         options_layout.addWidget(self.comparison)
