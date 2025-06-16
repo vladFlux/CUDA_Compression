@@ -7,10 +7,10 @@ set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
 
 # GPU binaries
 add_executable(huffman_compression
-        src/gpu_algorithm/compression/main_compress.cu
-        src/gpu_algorithm/compression/GPU_wrapper.cu
-        src/gpu_algorithm/compression/GPU_kernels.cu
-        src/gpu_algorithm/compression/parallel_utilities.cu)
+        src/gpu_algorithm/compression/compress.cu
+        src/gpu_algorithm/compression/gpu_wrapper.cu
+        src/gpu_algorithm/compression/kernels.cu
+        src/gpu_algorithm/compression/parallel.cu)
 
 set_target_properties(huffman_compression PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON)

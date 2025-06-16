@@ -1,6 +1,6 @@
 #include <iostream>
 #include <ostream>
-#include "parallel_utilities.h"
+#include "parallel.h"
 
 #define BLOCK_SIZE 1024
 

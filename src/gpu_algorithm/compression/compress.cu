@@ -5,7 +5,7 @@
 #include <iostream>
 #include <chrono>
 
-#include "parallel_utilities.h"
+#include "parallel.h"
 
 /**
  * @file main_compress.cu

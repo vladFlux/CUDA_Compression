@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#include "parallel_utilities.h"
+#include "parallel.h"
 
 
 /**
